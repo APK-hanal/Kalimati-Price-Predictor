@@ -1,6 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import date
+import pandas as pd
+import json
+import os
 def main():
     headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
@@ -42,7 +45,31 @@ def parse(response):
             data_list.append(data)
     return data_list
 
+file = 'record.json'
+def save(dict_list):
+    df = pd.DataFrame(dict_list)
+    df.to_json(file, orient = 'records', indent = 2)
+    
+    
+def update(dict_list):
+    with open(file, 'r') as f:
+        existing = json.load(f)
+    Cdate = existing[-1]['Date']
+    if Cdate == date.today().isoformat():
+            print("alr Done with scraping for today")
+            return
+    else:        
+            with open(file,'w') as f2:
+                existing.extend(dict_list)
+                json.dump(existing,f2, indent = 2,)
+        
+        
+
+
 if __name__ == "__main__":
     res = main()
     dicts = parse(res)
-    
+    if os.path.exists(file):
+        update(dicts)
+    else:
+        save(dicts)
