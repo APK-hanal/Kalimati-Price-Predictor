@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import date
 import pandas as pd
-import json
 import os
 def main():
     headers = {
@@ -44,32 +43,25 @@ def parse(response):
             data['Average'] = avg.text
             data_list.append(data)
     return data_list
-
-file = 'record.json'
+file = 'record.csv'
 def save(dict_list):
-    df = pd.DataFrame(dict_list)
-    df.to_json(file, orient = 'records', indent = 2)
-    
-    
-def update(dict_list):
-    with open(file, 'r') as f:
-        existing = json.load(f)
-    Cdate = existing[-1]['Date']
-    if Cdate == date.today().isoformat():
-            print("alr Done with scraping for today")
+    if os.path.exists(file):
+        existing = pd.read_csv(file)
+        if existing['Date'].iloc[-1] == date.today().isoformat():
+            print("alr done with scraping today, come back tmr")
             return
-    else:        
-            with open(file,'w') as f2:
-                existing.extend(dict_list)
-                json.dump(existing,f2, indent = 2,)
-        
-        
+    
+    df = pd.DataFrame(dict_list)
+    df.to_csv(file, mode='a', header=not os.path.exists(file), index=False)
+    print("Successfully scraped")
+            
+    
+    
+ 
+                
 
 
 if __name__ == "__main__":
     res = main()
     dicts = parse(res)
-    if os.path.exists(file):
-        update(dicts)
-    else:
-        save(dicts)
+    save(dicts)
