@@ -43,6 +43,7 @@ def parse(response):
             data['Average'] = avg.text
             data_list.append(data)
     return data_list
+## 3-3-26// Replace json file with csv files as it works better with the large dataset that I'll need :>
 file = 'record.csv'
 def save(dict_list):
     if os.path.exists(file):
@@ -55,11 +56,6 @@ def save(dict_list):
     df.to_csv(file, mode='a', header=not os.path.exists(file), index=False)
     print("Successfully scraped")
             
-    
-    
- 
-                
-
 
 if __name__ == "__main__":
     res = main()
