@@ -25,7 +25,7 @@ def parse(response):
         
         for element in rows[1:]:
 
-            #indivisual dicts of all the headings
+            #individual dicts of all the headings
             data = {}
             cols = element.find_all("td")
             if not cols[0].text.strip():
@@ -43,7 +43,7 @@ def parse(response):
             data['Average'] = avg.text
             data_list.append(data)
     return data_list
-## 3-3-26// Replace json file with csv files as it works better with the large dataset that I'll need :>
+##Replaced json file with csv files as it works better with the large dataset that I'll need :>
 file = 'record.csv'
 def save(dict_list):
     if os.path.exists(file):
@@ -55,7 +55,6 @@ def save(dict_list):
     df = pd.DataFrame(dict_list)
     df.to_csv(file, mode='a', header=not os.path.exists(file), index=False)
     print("Successfully scraped")
-            
 
 if __name__ == "__main__":
     res = main()
