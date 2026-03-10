@@ -8,11 +8,13 @@ try:
     df = pd.DataFrame(f)
     Dates = pd.to_datetime(df['Date'])
     Year = Dates.dt.year
+    Month = Dates.dt.month
+    Day = Dates.dt.day
     commodity = df['Commodity']
     Mins = df['Minimum value']
     Maxs = df['Maximum value']
     avgs = df['Average']
-    print(Year)
+    print(Year,Month,Day)
 except FileNotFoundError:
     print("Error")
 
