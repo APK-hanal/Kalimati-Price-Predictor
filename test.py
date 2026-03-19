@@ -3,32 +3,44 @@ from sklearn.ensemble import RandomForestRegressor
 from datetime import date,datetime
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_absolute_error
 import numpy as np
 
 try:
     f = pd.read_csv('record.csv')
     print("Yeehaw")
+    
     df = pd.DataFrame(f)
     Dates = pd.to_datetime(df['Date'])
+    #Time conversion
     Year = Dates.dt.year
     Month = Dates.dt.month
     Day = Dates.dt.day
     df['Year'] = Year
     df['Month']= Month
     df['Day'] = Day
+    
     commodity = df['Commodity']
     Mins = df['Minimum value']
     Maxs = df['Maximum value']
     avgs = df['Average']
+    
     df.drop('Date', axis=1, inplace=True)
     le = LabelEncoder()
     df['Commodity'] = le.fit_transform(df['Commodity'])
-    x = df[['Commodity', 'Year', 'Month', 'Day', 'Minimum value']]
-    y = df['Maximum value']
+    x = df[['Commodity', 'Year', 'Month', 'Day']]   
+    y = df['Average']
     x_train, x_test, y_train, y_test = train_test_split(
     x, y, test_size=0.33, random_state=42)
-    model = RandomForestRegressor()
+    #RFR testing
+    model = RandomForestRegressor(n_estimators=10000)
     model.fit(x_train,y_train)
+    y_pred = model.predict(x_test)
+    print(mean_absolute_error(y_test,y_pred))
+    print(model.score(x_test, y_test))
+    for com,pre in zip(commodity[:10],y_pred[:10]):
+        print(com,pre)
+        
     
 except FileNotFoundError:
     print("Error")
