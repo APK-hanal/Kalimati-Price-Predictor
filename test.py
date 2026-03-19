@@ -41,9 +41,7 @@ try:
     x_test_origin = le.inverse_transform(x_test['Commodity'])
     for com,pre in zip(x_test_origin[:5],y_pred[:5]):
         print(com,pre)
-    #Price range
-    print(df['Average'].describe())
-        
+    
     
 except FileNotFoundError:
     print("Error")
