@@ -30,16 +30,19 @@ try:
     df['Commodity'] = le.fit_transform(df['Commodity'])
     x = df[['Commodity', 'Year', 'Month', 'Day']]   
     y = df['Average']
-    x_train, x_test, y_train, y_test = train_test_split(
-    x, y, test_size=0.33, random_state=42)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=42)
     #RFR testing
-    model = RandomForestRegressor(n_estimators=10000)
+    model = RandomForestRegressor(n_estimators=10)
     model.fit(x_train,y_train)
     y_pred = model.predict(x_test)
     print(mean_absolute_error(y_test,y_pred))
     print(model.score(x_test, y_test))
-    for com,pre in zip(commodity[:10],y_pred[:10]):
+    #Convert commodity into original values
+    x_test_origin = le.inverse_transform(x_test['Commodity'])
+    for com,pre in zip(x_test_origin[:5],y_pred[:5]):
         print(com,pre)
+    #Price range
+    print(df['Average'].describe())
         
     
 except FileNotFoundError:
