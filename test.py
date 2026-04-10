@@ -19,7 +19,7 @@ try:
     df['Year'] = Year
     df['Month']= Month
     df['Day'] = Day
-    
+    print(df['Average'].dtype)
     commodity = df['Commodity']
     Mins = df['Minimum value']
     Maxs = df['Maximum value']
@@ -44,6 +44,7 @@ try:
     print(df['Commodity'].nunique())
     print(Dates.min(), Dates.max())    
     print(len(df))
+    
     
     
 except FileNotFoundError:

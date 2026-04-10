@@ -38,9 +38,9 @@ def parse(response):
             data['Date'] = date.today().isoformat()
             data["Commodity"] = com.text
             data['Unit'] = unit.text
-            data['Minimum value'] = min_value.text
-            data['Maximum value'] = max_value.text
-            data['Average'] = avg.text
+            data['Minimum value'] = int(min_value.text.strip().replace(',', ''))
+            data['Maximum value'] = int(max_value.text.strip().replace(',', ''))
+            data['Average'] = int(avg.text.strip().replace(',', ''))
             data_list.append(data)
     return data_list
 ##Replaced json file with csv files as it works better with the large dataset that I'll need :>
