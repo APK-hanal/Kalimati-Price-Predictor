@@ -44,8 +44,9 @@ def parse(response):
             data_list.append(data)
     return data_list
 ##Replaced json file with csv files as it works better with the large dataset that I'll need :>
-file = 'record.csv'
+
 def save(dict_list):
+    file = 'record.csv'
     if os.path.exists(file):
         existing = pd.read_csv(file)
         if existing['Date'].iloc[-1] == date.today().isoformat():
@@ -58,5 +59,8 @@ def save(dict_list):
 
 if __name__ == "__main__":
     res = main()
-    dicts = parse(res)
+    try:
+        dicts = parse(res)
+    except IndexError:
+        print("Maybe check the columns on the original website")
     save(dicts)
