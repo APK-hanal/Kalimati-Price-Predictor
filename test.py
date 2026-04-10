@@ -7,7 +7,7 @@ import numpy as np
 
 try:
     df = pd.read_csv('record.csv')
-    df.sort_values('Date')
+    df = df.sort_values('Date')
     print("Yeehaw")
     Dates = pd.to_datetime(df['Date'])
     #Time conversion
@@ -39,8 +39,8 @@ try:
     model_max.fit(x_train,y_train_max)
     min_pred = model_min.predict(x_test)
     max_pred = model_max.predict(x_test)
-    print(mean_absolute_error(y_test_min,max_pred))
-    print(mean_absolute_error(y_test_max,min_pred))
+    print(mean_absolute_error(y_test_min, min_pred))
+    print(mean_absolute_error(y_test_max, max_pred))
     print(model_min.score(x_test, y_test_min))
     print(model_max.score(x_test, y_test_max))
     #Convert commodity into original values
