@@ -63,4 +63,5 @@ if __name__ == "__main__":
         dicts = parse(res)
     except IndexError:
         print("Maybe check the columns on the original website")
+        exit(1)
     save(dicts)
