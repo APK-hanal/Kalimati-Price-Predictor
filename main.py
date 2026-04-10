@@ -15,33 +15,30 @@ def main():
 def parse(response):
     soup = BeautifulSoup(response, "html.parser")
     rows = []
-
+    #list of dicts
+    data_list = []
     table = soup.find('table', id= 'commodityDailyPrice')
-    if table:
-        row = table.find_all("tr")
-        rows = row
-        # list of dicts
-        data_list = []
-        
-        for element in rows[1:]:
+    if not table:
+        print("Error! Table not found, check the site ")
+        #Prevent the valueError
+        return data_list
+    
+    row = table.find_all("tr")
+    rows = row
+    for element in rows[1:]:
 
-            #individual dicts of all the headings
-            data = {}
-            cols = element.find_all("td")
-            if not cols[0].text.strip():
+    #individual dicts of all the headings
+        data = {}
+        cols = element.find_all("td")
+        if not cols[0].text.strip():
                 continue
-            com = cols[0]
-            unit = cols[1]
-            min_value = cols[2]
-            max_value = cols[3]
-            avg = cols[4]
-            data['Date'] = date.today().isoformat()
-            data["Commodity"] = com.text
-            data['Unit'] = unit.text
-            data['Minimum value'] = int(min_value.text.strip().replace(',', ''))
-            data['Maximum value'] = int(max_value.text.strip().replace(',', ''))
-            data['Average'] = int(avg.text.strip().replace(',', ''))
-            data_list.append(data)
+        data['Date'] = date.today().isoformat()
+        data["Commodity"] = cols[0].text.strip()
+        data['Unit'] = cols[1].text.strip()
+        data['Minimum value'] = int(cols[2].text.strip().replace(',', ''))
+        data['Maximum value'] = int(cols[3].text.strip().replace(',', ''))
+        data['Average'] = int(cols[4].text.strip().replace(',', ''))
+        data_list.append(data)
     return data_list
 ##Replaced json file with csv files as it works better with the large dataset that I'll need :>
 
