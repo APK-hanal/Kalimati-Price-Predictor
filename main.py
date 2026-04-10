@@ -23,9 +23,7 @@ def parse(response):
         #Prevent the valueError
         return data_list
     
-    row = table.find_all("tr")
-    rows = row
-    for element in rows[1:]:
+    for element in table.find_all("tr")[1:]:
 
     #individual dicts of all the headings
         data = {}
